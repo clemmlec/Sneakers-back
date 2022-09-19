@@ -1,6 +1,6 @@
 # Sneakers-back
 
-Api faite en Symfony 6 pour un projet de formation
+Api REST en Symfony 6 pour un projet de formation
 
 ![GitHub top language](https://img.shields.io/github/languages/top/clemmlec/Sneakers-back)
 ![GitHub language count](https://img.shields.io/github/languages/count/clemmlec/Sneakers-back)
@@ -38,3 +38,29 @@ Pour lancer le server local :
 
     symfony server:start
   
+Les différentes routes :
+
+  méthode GET
+  
+    - https//127.0.0.1:3307/sneakers
+      -> renvoie un tableau de tous les articles
+      
+    - https//127.0.0.1:3307/sneakers/id
+      -> renvoie l'article selectioné 
+      
+  méthode POST
+  
+    - https//127.0.0.1:3307/sneakers
+      -> crée un nouvel article
+   
+  méthode PUT
+  
+    - https//127.0.0.1:3307/sneakers/id
+      -> modifie l'article selectioné 
+  
+  méthode DELETE
+  
+    - https//127.0.0.1:3307/sneakers/id
+      -> supprime l'article selectioné 
+      
+      
