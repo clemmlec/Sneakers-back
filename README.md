@@ -2,8 +2,8 @@
 
 Api faite en Symfony 6 pour un projet de formation
 
-![GitHub top language](https://img.shields.io/github/languages/top/clemmlec/sneakers_back)
-![GitHub language count](https://img.shields.io/github/languages/count/clemmlec/sneakers_back)
+![GitHub top language](https://img.shields.io/github/languages/top/clemmlec/Sneakers-back)
+![GitHub language count](https://img.shields.io/github/languages/count/clemmlec/Sneakers-back)
 
 Prérequi 
 
