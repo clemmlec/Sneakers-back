@@ -33,7 +33,7 @@ class SneakersController extends AbstractController
         if( !$sneakers instanceof Sneakers ){ return $this->json([
             'message' => 'error on ne trouve pas cette sneakers',
           
-        ]);
+        ],422);
         }
 
         // $sneakersJson = $serializer->serialize($book, 'json', ['groups' => 'getBooks']);
@@ -41,7 +41,7 @@ class SneakersController extends AbstractController
         return $this->json([
             'message' => $sneakers,
           
-        ]);
+        ],201);
     }
 
     #[Route('/sneakers', name: 'app_sneakers_create', methods: ['POST'])]
@@ -53,15 +53,39 @@ class SneakersController extends AbstractController
         if($sneakersRepo->add($sneakers, true)){
             return $this->json([
                 'message' => 'sneakers créer avec succes '
-            ]);
+            ],201);
         }else{
             return $this->json([
                 'message' => 'sneakers non créer un probleme est survenu'
-            ]);
+            ],422);
         }
         
+    }
 
-       
+    #[Route('/sneakers/{id}', name: 'app_sneakers_update', methods:['PUT'])]
+    public function update(int $id,Request $request, SerializerInterface $serializer, SneakersRepository $sneakersRepo): JsonResponse
+    {
+        $sneakers = $sneakersRepo->find($id);
+
+        if( !$sneakers instanceof Sneakers ){ 
+            return $this->json([
+                'message' => 'error on ne trouve pas cette sneakers'
+          
+            ], 404);
+        }
+
+        $sneakers = $serializer->deserialize($request->getContent(), Sneakers::class, 'json');
+        
+        if($sneakersRepo->add($sneakers, true)){
+            return $this->json([
+                'message' => 'sneakers modifié avec succes '
+            ],201);
+        }else{
+            return $this->json([
+                'message' => 'sneakers non modifié un probleme est survenu'
+            ],422);
+        }
+
     }
 
 }
