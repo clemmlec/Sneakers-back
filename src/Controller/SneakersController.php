@@ -14,21 +14,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class SneakersController extends AbstractController
 {
     #[Route('/sneakers', name: 'app_sneakers', methods:['GET'])]
-    public function index(): JsonResponse
+    public function index(SneakersRepository $sneakersRepo): JsonResponse
     {
+        $sneakers = $sneakersRepo->findAll();
+        // $sneakersJson = $serializer->serialize($book, 'json', ['groups' => 'getBooks']);
+
         return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/SneakersController.php',
+            'message' => $sneakers,
+          
         ]);
     }
 
     #[Route('/sneakers', name: 'app_sneakers_create', methods: ['POST'])]
-    public function create(Request $request, SerializerInterface $serializer,  SneakersRepository $em): JsonResponse
+    public function create(Request $request, SerializerInterface $serializer,  SneakersRepository $sneakersRepo): JsonResponse
     {
         
         $sneakers = $serializer->deserialize($request->getContent(), Sneakers::class, 'json');
         
-        if($em->add($sneakers, true)){
+        if($sneakersRepo->add($sneakers, true)){
             return $this->json([
                 'message' => 'sneakers créer avec succes '
             ]);
