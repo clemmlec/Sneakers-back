@@ -25,6 +25,25 @@ class SneakersController extends AbstractController
         ]);
     }
 
+    #[Route('/sneakers/{id}', name: 'app_sneakers_details', methods:['GET'])]
+    public function details(int $id, SneakersRepository $sneakersRepo): JsonResponse
+    {
+        $sneakers = $sneakersRepo->find($id);
+
+        if( !$sneakers instanceof Sneakers ){ return $this->json([
+            'message' => 'error on ne trouve pas cette sneakers',
+          
+        ]);
+        }
+
+        // $sneakersJson = $serializer->serialize($book, 'json', ['groups' => 'getBooks']);
+
+        return $this->json([
+            'message' => $sneakers,
+          
+        ]);
+    }
+
     #[Route('/sneakers', name: 'app_sneakers_create', methods: ['POST'])]
     public function create(Request $request, SerializerInterface $serializer,  SneakersRepository $sneakersRepo): JsonResponse
     {
