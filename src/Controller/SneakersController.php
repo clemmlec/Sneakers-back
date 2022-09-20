@@ -62,15 +62,32 @@ class SneakersController extends AbstractController
     }
 
     #[Route('/sneakers', name: 'app_sneakers_create', methods: ['POST'])]
-    public function create(Request $request, SerializerInterface $serializer,  SneakersRepository $sneakersRepo): JsonResponse
+    public function create(Request $request, SneakersRepository $sneakersRepo): JsonResponse
     {
         
-        $sneakers = $serializer->deserialize($request->getContent(), Sneakers::class, 'json');
+        $data = json_decode($request->getContent(), true);
+
+        foreach  ( $data as $d) { 
+            if(empty($d)){
+                $this->json([
+                    'message' => 'tout les champs doivent etre rempli'
+                ],422);
+            }
+        }
+        
+
         try {
+            $sneakers = new Sneakers;
+            $sneakers->setName($data['name'])
+            ->setMarque($data['marque'])
+            ->setPrix($data['prix'])
+            ->setDescription($data['description'])
+            ->setAnnee($data['annee'])
+            ->setImage($data['image']);
             $sneakersRepo->add($sneakers, true);
         } catch (Throwable $th) {
             return $this->json([
-                'message' => 'sneakers non créer un probleme est survenu'
+                'message' => 'sneakers non créer un probleme est survenu pensez à bein remplir les champs'
             ],422);
         }
 
@@ -80,7 +97,7 @@ class SneakersController extends AbstractController
 
     }
 
-    #[Route('/sneakers/{id}', name: 'app_sneakers_update', methods:['PUT'])]
+    #[Route('/sneakers/{id}', name: 'app_sneakers_update', methods:['PATCH'])]
     public function update(int $id,Request $request, SerializerInterface $serializer, SneakersRepository $sneakersRepo): JsonResponse
     {
         $sneakers = $sneakersRepo->find($id);
@@ -92,17 +109,31 @@ class SneakersController extends AbstractController
             ], 404);
         }
 
-        $sneakers = $serializer->deserialize($request->getContent(), Sneakers::class, 'json');
+        $data = json_decode($request->getContent(), true);
+
+
         
-        if($sneakersRepo->add($sneakers, true)){
+
+        try {
+            $sneakers = new Sneakers;
+            $sneakers->setName($data['name'])
+            ->setMarque($data['marque'])
+            ->setPrix($data['prix'])
+            ->setDescription($data['description'])
+            ->setAnnee($data['annee'])
+            ->setImage($data['image']);
+            $sneakersRepo->add($sneakers, true);
+        } catch (Throwable $th) {
             return $this->json([
-                'message' => 'sneakers modifié avec succes '
-            ],201);
-        }else{
-            return $this->json([
-                'message' => 'sneakers non modifié un probleme est survenu'
+                'message' => 'sneakers non modifié veuillez rentrer tout les champs'
             ],422);
         }
+        
+      
+        return $this->json([
+            'message' => 'sneakers modifié avec succes '
+        ],201);
+
 
     }
 
