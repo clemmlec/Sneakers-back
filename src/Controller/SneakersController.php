@@ -115,7 +115,7 @@ class SneakersController extends AbstractController
         
 
         try {
-            $sneakers = new Sneakers;
+            
             $sneakers->setName($data['name'])
             ->setMarque($data['marque'])
             ->setPrix($data['prix'])
